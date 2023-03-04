@@ -1,8 +1,13 @@
-import { View } from "react-native";
-function Register({ navigation, route }) {
-  const inComingData = route.params;
-  alert(inComingData.data.Name);
-
-  return <View></View>;
+import { View, TextInput, Button, StyleSheet } from "react-native";
+function Register(navigation) {
+  return <View style={{ backgroundColor: "blue" }}></View>;
 }
+
 export { Register };
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "blue",
+  },
+});

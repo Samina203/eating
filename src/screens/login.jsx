@@ -27,7 +27,7 @@ function Login(navigation) {
         ></TextInput>
       </View>
       <View style={styles.bottomBox}>
-        <Button title="Loginme" onPress={btnPressed}></Button>
+        <Button title="Login account" onPress={btnPressed}></Button>
       </View>
     </View>
   );
