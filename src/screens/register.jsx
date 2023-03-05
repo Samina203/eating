@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as EmailValidator from "email-validator";
+
 import {
   View,
   TextInput,
@@ -7,27 +9,81 @@ import {
   TouchableOpacity,
 } from "react-native";
 function Register(navigation, route) {
+  const [isValid, setIsValid] = useState(false); // form is valid or not
   const [firstName, setFirstName] = useState("");
   const [lasttName, setLasttName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  useEffect(() => {
+    checkValidForm();
+  }, [firstName, lasttName, email, password, confirmPassword]);
+  const checkValidForm = () => {
+    if (firstName === "") {
+      setIsValid(false);
+      return;
+    }
+    if (lasttName === "") {
+      setIsValid(false);
+      return;
+    }
+    if (EmailValidator.validate(email) === false) {
+      setIsValid(false);
+      return;
+    }
+    if (password === "") {
+      setIsValid(false);
+      return;
+    }
+    if (confirmPassword === "") {
+      setIsValid(false);
+      return;
+    }
+    if (password !== confirmPassword) {
+      setIsValid(false);
+      return;
+    }
+    setIsValid(true);
+  };
   const submitBtn = () => {
     alert("go");
   };
   return (
     <View style={styles.container}>
       <View style={styles.loginForm}>
-        <TextInput style={styles.inputBox} placeholder="First Name"></TextInput>
-        <TextInput style={styles.inputBox} placeholder="Last Name"></TextInput>
-        <TextInput style={styles.inputBox} placeholder="Email"></TextInput>
-        <TextInput style={styles.inputBox} placeholder="Password"></TextInput>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="First Name"
+          onChangeText={setFirstName}
+        ></TextInput>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="Last Name"
+          onChangeText={setLasttName}
+        ></TextInput>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="Email"
+          onChangeText={setEmail}
+        ></TextInput>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={setPassword}
+        ></TextInput>
         <TextInput
           style={styles.inputBox}
           placeholder="Confirm Password"
+          secureTextEntry={true}
+          onChangeText={setConfirmPassword}
         ></TextInput>
         <View style={styles.buttonProp}>
-          <Button title="Submit" onPress={submitBtn}></Button>
+          <Button
+            title="Submit"
+            onPress={submitBtn}
+            disabled={isValid == false}
+          ></Button>
         </View>
       </View>
     </View>
