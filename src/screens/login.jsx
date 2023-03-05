@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   TouchableOpacity,
   View,
@@ -8,23 +9,43 @@ import {
   TextInput,
   Button,
 } from "react-native";
-function Login(navigation) {
+function Login({ navigation }) {
   const [emailInput, setEmailInput] = useState();
   const [passwordInput, setPasswordInput] = useState();
-  const btnPressed = () => alert(emailInput);
+  const [showPassword, setShowPassword] = useState(true);
+  const onEyePressed = () => {
+    if (showPassword == true) {
+      setShowPassword(false);
+    } else {
+      setShowPassword(true);
+    }
+  };
+  const btnPressed = () => {
+    navigation.navigate("registersheda");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.loginForm}>
         <TextInput
           style={styles.inputBox}
-          placeholder="email"
+          placeholder="Email"
           onChangeText={(text) => setEmailInput(text)}
         ></TextInput>
-        <TextInput
-          placeholder="Password"
-          style={styles.inputBox}
-          onChangeText={(text) => setPasswordInput(text)}
-        ></TextInput>
+        <View style={styles.inPassword}>
+          <TextInput
+            style={styles.inIcon}
+            placeholder="Password"
+            secureTextEntry={showPassword} // hide passwsord
+            onChangeText={(text) => setPasswordInput(text)}
+          ></TextInput>
+
+          <Ionicons
+            name={showPassword ? "eye" : "eye-off"}
+            size={24}
+            color={showPassword ? "purple" : "orange"}
+            onPress={onEyePressed}
+          ></Ionicons>
+        </View>
       </View>
       <View style={styles.bottomBox}>
         <Button title="Login account" onPress={btnPressed}></Button>
@@ -40,15 +61,26 @@ const styles = StyleSheet.create({
   },
   loginForm: {
     flex: 1,
+    paddingTop: 0.5,
   },
   bottomBox: {
     flex: 1,
-    backgroundColor: "purple",
   },
   inputBox: {
-    marginVertical: 10,
+    marginVertical: 5,
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
+  },
+  inPassword: {
+    alignItems: "center",
+    borderRadius: 10,
+    borderWidth: 1,
+    flexDirection: "row",
+    padding: 5,
+  },
+  inIcon: {
+    padding: 7,
+    width: "90%",
   },
 });
