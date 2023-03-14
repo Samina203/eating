@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import { Camera, CameraType } from "expo-camera";
 import {
   TouchableOpacity,
   View,
   Text,
   StyleSheet,
+  Image,
   ScrollView,
   TextInput,
   Button,
@@ -13,6 +16,7 @@ function Login({ navigation }) {
   const [emailInput, setEmailInput] = useState();
   const [passwordInput, setPasswordInput] = useState();
   const [showPassword, setShowPassword] = useState(true);
+  const [imageUri, setImageUri] = useState();
   const onEyePressed = () => {
     if (showPassword == true) {
       setShowPassword(false);
@@ -22,6 +26,25 @@ function Login({ navigation }) {
   };
   const btnPressed = () => {
     navigation.navigate("registersheda");
+  };
+  const openGallery = () => {
+    ImagePicker.requestMediaLibraryPermissionsAsync().then((response) => {
+      console.log("permision grant");
+    });
+    ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 0.5,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    })
+      .then((response) => {
+        if (response.uri !== undefined) {
+          setImageUri(response.uri);
+        }
+      })
+
+      .catch((error) => {
+        alert(error.message);
+      });
   };
   return (
     <View style={styles.container}>
@@ -48,7 +71,9 @@ function Login({ navigation }) {
         </View>
       </View>
       <View style={styles.bottomBox}>
+        <Image style={styles.galleryImg} source={{ uri: imageUri }}></Image>
         <Button title="Login account" onPress={btnPressed}></Button>
+        <Button title="Gallery" onPress={openGallery}></Button>
       </View>
     </View>
   );
@@ -82,5 +107,11 @@ const styles = StyleSheet.create({
   inIcon: {
     padding: 7,
     width: "90%",
+  },
+  galleryImg: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    margin: 5,
   },
 });

@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import * as EmailValidator from "email-validator";
 import { Camera, CameraType } from "expo-camera";
+import { auth } from "../services/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import {
   View,
@@ -55,7 +57,14 @@ function Register(navigation, route) {
     setIsValid(true);
   };
   const submitBtn = () => {
-    alert("go");
+    auth()
+      .createUserWithEmailAndPassword(auth, email, password)
+      .then((response) => {
+        alert("data send");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
   const onTakePicture = () => {
     if (cameraRef.current === undefined) {
