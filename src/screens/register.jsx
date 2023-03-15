@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import * as EmailValidator from "email-validator";
-import { Camera, CameraType } from "expo-camera";
 import { auth } from "../services/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import * as firebase from "firebase/app";
 
 import {
   View,
@@ -19,12 +19,6 @@ function Register(navigation, route) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  requestPermission();
-  const cameraRef = useRef();
-  const [profilePicture, setProfilePicture] = useState("");
 
   useEffect(() => {
     checkValidForm();
@@ -66,38 +60,10 @@ function Register(navigation, route) {
         alert(error.message);
       });
   };
-  const onTakePicture = () => {
-    if (cameraRef.current === undefined) {
-      return;
-    }
-    cameraRef.current
-      .takePictureAsync()
-      .then((response) => {
-        console.log(response);
-        if (response.uri !== undefined) {
-          setProfilePicture(response.uri);
-        }
-        alert("picture ok");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  };
+
   return (
     <View style={styles.container}>
       <View style={styles.loginForm}>
-        <Camera ref={cameraRef} style={styles.camera} type={type}>
-          <View style={styles.cambtnView}>
-            <TouchableOpacity
-              style={styles.camerabtn}
-              onPress={onTakePicture}
-            ></TouchableOpacity>
-          </View>
-        </Camera>
-        <Image
-          style={styles.profileImg}
-          source={{ uri: profilePicture }}
-        ></Image>
         <TextInput
           style={styles.inputBox}
           placeholder="First Name"
