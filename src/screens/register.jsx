@@ -2,7 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import * as EmailValidator from "email-validator";
 import { auth } from "../services/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import * as firebase from "firebase/app";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import { addDoc } from "firebase/firestore";
+import { db } from "../services/firebaseConfig";
 
 import {
   View,
@@ -19,6 +21,7 @@ function Register(navigation, route) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     checkValidForm();
@@ -48,17 +51,19 @@ function Register(navigation, route) {
       setIsValid(false);
       return;
     }
+
     setIsValid(true);
   };
   const submitBtn = () => {
-    auth()
-      .createUserWithEmailAndPassword(auth, email, password)
+    alert("valid");
+    createUserWithEmailAndPassword(auth, email, password)
       .then((response) => {
         alert("data send");
       })
       .catch((error) => {
         alert(error.message);
       });
+    setLoading(true);
   };
 
   return (
@@ -91,6 +96,7 @@ function Register(navigation, route) {
           secureTextEntry={true}
           onChangeText={setConfirmPassword}
         ></TextInput>
+        <Spinner visible={loading} textContent={"Loading..."} />
         <View style={styles.buttonProp}>
           <Button
             title="Submit"

@@ -14,7 +14,7 @@ export default function App() {
           headerStyle: { backgroundColor: "purple" },
         }}
       >
-        <Stack.Screen name="registersheda" component={Register}></Stack.Screen>
+        <Stack.Screen name="register" component={Register}></Stack.Screen>
         <Stack.Screen name="login" component={Login}></Stack.Screen>
 
         <Stack.Screen name="book" component={Book}></Stack.Screen>
